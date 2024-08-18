@@ -1,13 +1,13 @@
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
-import { Checklist } from './components/Checklist';
+import { Home } from "./components/pages/Home";
 
 function App() {
   return (
     <Theme>
-      <Checklist />
+      <Home />
     </Theme>
-  )
+  );
 }
 
-export default App
+export default App;
