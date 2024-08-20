@@ -1,12 +1,6 @@
-import React from "react";
 import { styled } from "@stitches/react";
 
-interface FloatingActionButtonProps {
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  icon: React.ReactNode;
-}
-
-const FabButton = styled("button", {
+export const FabButton = styled("button", {
   position: "fixed",
   bottom: "20px",
   right: "20px",
@@ -32,12 +26,3 @@ const FabButton = styled("button", {
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.4)",
   },
 });
-
-const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
-  onClick,
-  icon,
-}) => {
-  return <FabButton onClick={onClick}>{icon}</FabButton>;
-};
-
-export default FloatingActionButton;

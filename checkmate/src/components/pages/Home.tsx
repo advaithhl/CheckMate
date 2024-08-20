@@ -1,13 +1,9 @@
 import { Heading, Section } from "@radix-ui/themes";
 import { Checklist } from "../Checklist";
-import { PlusIcon } from "@radix-ui/react-icons";
-import FloatingActionButton from "../FloatingActionButton";
+import { NewItemAdder } from "../NewItemAdder";
 
 export function Home() {
   const user = "John Doe";
-  const handleFabClick = () => {
-    console.log("FAB clicked!");
-  };
 
   return (
     <>
@@ -17,7 +13,7 @@ export function Home() {
       <Section>
         <Checklist />
       </Section>
-      <FloatingActionButton onClick={handleFabClick} icon={<PlusIcon />} />
+      <NewItemAdder />
     </>
   );
 }
