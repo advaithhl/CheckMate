@@ -1,5 +1,6 @@
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Button, Card, Container, Flex, Text } from "@radix-ui/themes";
+import "./styles.css";
 
 export function Checklist() {
   const data = [
@@ -23,11 +24,11 @@ export function Checklist() {
             </Text>
             <Flex gap={"2"} justify={"end"}>
               <Button variant={"soft"} color={"grass"}>
-                <Text>Mark as done</Text>
+                <Text className="hidden-on-mobile">Mark as done</Text>
                 <CheckIcon width="18" height="18" />
               </Button>
               <Button variant={"soft"} color={"red"}>
-                Delete
+                <Text className="hidden-on-mobile">Delete</Text>
                 <TrashIcon width="18" height="18" />
               </Button>
             </Flex>

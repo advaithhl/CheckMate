@@ -1,0 +1,9 @@
+.hidden-on-mobile {
+  display: none;
+}
+
+@media (min-width: 520px) {
+  .hidden-on-mobile {
+    display: block;
+  }
+}
