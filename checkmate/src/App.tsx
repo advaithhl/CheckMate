@@ -3,6 +3,7 @@ import "@radix-ui/themes/styles.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./components/pages/Home";
 import { Login } from "./components/pages/Login";
+import { Register } from "./components/pages/Register";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   }
 ]);
 
