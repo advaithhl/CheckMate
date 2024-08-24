@@ -1,2 +1,2 @@
 // development API endpoint
-export const APP_API_URL = 'localhost:3000'
+export const APP_API_URL = 'http://localhost:3000'
