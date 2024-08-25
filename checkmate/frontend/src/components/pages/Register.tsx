@@ -9,6 +9,9 @@ import {
   Text,
   TextField,
 } from "@radix-ui/themes";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "../../services/AuthService";
+import { useNavigate } from "react-router-dom";
 
 export function Register() {
   const [name, setName] = useState("");
@@ -19,6 +22,19 @@ export function Register() {
     username?: string;
     password?: string;
   }>({});
+  const navigate = useNavigate();
+  const [notification, setNotification] = useState("");
+
+  const registerMutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      setNotification("Registration successful! Redirecting...");
+      setTimeout(() => {
+        setNotification("");
+        navigate("/login");
+      }, 3000);
+    },
+  });
 
   const validateForm = () => {
     const newErrors: { name?: string; username?: string; password?: string } =
@@ -47,6 +63,11 @@ export function Register() {
     if (Object.keys(validationErrors).length === 0) {
       // No errors, proceed with form submission
       console.log("Form submitted:", { name, username, password });
+      registerMutation.mutate({
+        name: name,
+        username: username,
+        password: password,
+      });
     } else {
       // Set errors
       setErrors(validationErrors);
@@ -152,6 +173,23 @@ export function Register() {
           </Text>
         </Flex>
       </Section>
+      {notification && (
+        <Card
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            background: "green",
+            zIndex: 9999,
+            padding: "16px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <Flex align="center" justify="center">
+            <Text>{notification}</Text>
+          </Flex>
+        </Card>
+      )}
     </>
   );
 }
