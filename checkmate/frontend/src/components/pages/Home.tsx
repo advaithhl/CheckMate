@@ -1,14 +1,17 @@
 import { Heading, Section } from "@radix-ui/themes";
 import { Checklist } from "../Checklist";
 import { NewItemAdder } from "../NewItemAdder";
+import { getUserInfoFromLocalStorage } from "../../utils/userInfo";
 
 export function Home() {
-  const user = "John Doe";
+  const userInfo = getUserInfoFromLocalStorage();
 
   return (
     <>
       <Section>
-        <Heading>Hello {user}</Heading>
+        <Heading align={"center"}>
+          Hello {userInfo ? userInfo.name : "user"}!
+        </Heading>
       </Section>
       <Section>
         <Checklist />
