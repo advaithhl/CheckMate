@@ -9,6 +9,10 @@ import {
   Text,
   TextField,
 } from "@radix-ui/themes";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../../services/AuthService";
+import { setUserInfoToLocalStorage } from "../../utils/userInfo";
+import { UserInfo } from "../../models";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -17,6 +21,18 @@ export function Login() {
     username?: string;
     password?: string;
   }>({});
+
+  const loginMutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data: UserInfo) => {
+      setUserInfoToLocalStorage(data);
+      console.log(data.id);
+      console.log(data.name);
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+  });
 
   const validateForm = () => {
     const newErrors: { username?: string; password?: string } = {};
@@ -38,6 +54,10 @@ export function Login() {
     if (Object.keys(validationErrors).length === 0) {
       // No errors, proceed with form submission
       console.log("Form submitted:", { username, password });
+      loginMutation.mutate({
+        username: username,
+        password: password,
+      });
     } else {
       // Set errors
       setErrors(validationErrors);

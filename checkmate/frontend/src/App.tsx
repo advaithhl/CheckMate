@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./components/pages/Home";
 import { Login } from "./components/pages/Login";
 import { Register } from "./components/pages/Register";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   {
@@ -17,14 +18,18 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
-  }
+  },
 ]);
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Theme>
-      <RouterProvider router={router} />
-    </Theme>
+    <QueryClientProvider client={queryClient}>
+      <Theme>
+        <RouterProvider router={router} />
+      </Theme>
+    </QueryClientProvider>
   );
 }
 
