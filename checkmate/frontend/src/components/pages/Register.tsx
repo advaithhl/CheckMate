@@ -40,6 +40,11 @@ export function Register() {
         setErrors({
           username: "Username is already taken",
         });
+      } else {
+        setNotification("An error occurred! Please try again.");
+        setTimeout(() => {
+          setNotification("");
+        }, 3000);
       }
     },
   });
@@ -187,7 +192,7 @@ export function Register() {
             position: "fixed",
             bottom: "20px",
             right: "20px",
-            background: "green",
+            background: notification.includes("successful") ? "green" : "red",
             zIndex: 9999,
             padding: "16px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",

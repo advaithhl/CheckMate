@@ -14,6 +14,7 @@ import { loginUser } from "../../services/AuthService";
 import { setUserInfoToLocalStorage } from "../../utils/userInfo";
 import { UserInfo } from "../../models";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -23,6 +24,7 @@ export function Login() {
     password?: string;
   }>({});
   const navigate = useNavigate();
+  const [notification, setNotification] = useState("");
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
@@ -32,8 +34,22 @@ export function Login() {
       console.log(data.name);
       navigate("/");
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (error: AxiosError) => {
+      if (error.status === 404) {
+        setErrors({
+          username: "Please recheck your username",
+          password: "Please recheck your password",
+        });
+        setNotification("Bad username or password. Please try again.");
+        setTimeout(() => {
+          setNotification("");
+        }, 3000);
+      } else {
+        setNotification("An error occurred! Please try again.");
+        setTimeout(() => {
+          setNotification("");
+        }, 3000);
+      }
     },
   });
 
@@ -139,6 +155,23 @@ export function Login() {
           </Text>
         </Flex>
       </Section>
+      {notification && (
+        <Card
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            background: "red",
+            zIndex: 9999,
+            padding: "16px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <Flex align="center" justify="center">
+            <Text>{notification}</Text>
+          </Flex>
+        </Card>
+      )}
     </>
   );
 }
