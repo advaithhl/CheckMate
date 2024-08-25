@@ -12,6 +12,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "../../services/AuthService";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 export function Register() {
   const [name, setName] = useState("");
@@ -33,6 +34,13 @@ export function Register() {
         setNotification("");
         navigate("/login");
       }, 3000);
+    },
+    onError: (error: AxiosError) => {
+      if (error.status === 409) {
+        setErrors({
+          username: "Username is already taken",
+        });
+      }
     },
   });
 
