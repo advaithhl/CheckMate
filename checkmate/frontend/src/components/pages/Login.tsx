@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../services/AuthService";
 import { setUserInfoToLocalStorage } from "../../utils/userInfo";
 import { UserInfo } from "../../models";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -21,6 +22,7 @@ export function Login() {
     username?: string;
     password?: string;
   }>({});
+  const navigate = useNavigate();
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
@@ -28,10 +30,11 @@ export function Login() {
       setUserInfoToLocalStorage(data);
       console.log(data.id);
       console.log(data.name);
+      navigate("/");
     },
     onError: (error) => {
-      console.log(error)
-    }
+      console.log(error);
+    },
   });
 
   const validateForm = () => {
