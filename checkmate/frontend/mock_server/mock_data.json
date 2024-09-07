@@ -20,6 +20,16 @@
           "uuid": "217321c0-0d42-442e-99c6-fbd721046ff0"
         }
       ]
+    },
+    {
+      "uuid": "c7cd2203-1665-4d44-9f6d-5b40a17db1a9",
+      "name": "actions",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "3007a80e-2e5b-4686-a284-1587191ad975"
+        }
+      ]
     }
   ],
   "routes": [
@@ -147,6 +157,35 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "3007a80e-2e5b-4686-a284-1587191ad975",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "actions/getItems",
+      "responses": [
+        {
+          "uuid": "0f83f439-fee9-42a0-bc84-f6d181da6b64",
+          "body": "{\n  \"items\": [\n    {\n      \"id\": \"1\",\n      \"text\": \"Buy eggs\"\n    },\n    {\n      \"id\": \"3\",\n      \"text\": \"Buy milk\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -157,6 +196,10 @@
     {
       "type": "folder",
       "uuid": "81f94186-9a6f-48a8-a39e-e7767d560225"
+    },
+    {
+      "type": "folder",
+      "uuid": "c7cd2203-1665-4d44-9f6d-5b40a17db1a9"
     }
   ],
   "proxyMode": false,

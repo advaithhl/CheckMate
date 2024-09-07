@@ -14,3 +14,12 @@ export interface UserInfo {
   name: string;
   token: string;
 }
+
+export interface ItemList {
+  items: Item[];
+}
+
+export interface Item {
+  id: string;
+  text: string;
+}
