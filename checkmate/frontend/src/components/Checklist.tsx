@@ -1,4 +1,4 @@
-import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
+import { CheckIcon } from "@radix-ui/react-icons";
 import {
   Button,
   Card,
@@ -49,10 +49,6 @@ export function Checklist() {
                 <Button variant={"soft"} color={"grass"}>
                   <Text className="hidden-on-mobile">Mark as done</Text>
                   <CheckIcon width="18" height="18" />
-                </Button>
-                <Button variant={"soft"} color={"red"}>
-                  <Text className="hidden-on-mobile">Delete</Text>
-                  <TrashIcon width="18" height="18" />
                 </Button>
               </Flex>
             </Flex>
