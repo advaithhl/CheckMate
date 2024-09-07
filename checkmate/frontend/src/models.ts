@@ -23,3 +23,7 @@ export interface Item {
   id: string;
   text: string;
 }
+
+export interface NewItem {
+  text: string;
+}

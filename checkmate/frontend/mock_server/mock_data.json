@@ -28,6 +28,10 @@
         {
           "type": "route",
           "uuid": "3007a80e-2e5b-4686-a284-1587191ad975"
+        },
+        {
+          "type": "route",
+          "uuid": "6faab876-7b85-4fa1-b685-293715cf0eef"
         }
       ]
     }
@@ -168,6 +172,35 @@
         {
           "uuid": "0f83f439-fee9-42a0-bc84-f6d181da6b64",
           "body": "{\n  \"items\": [\n    {\n      \"id\": \"1\",\n      \"text\": \"Buy eggs\"\n    },\n    {\n      \"id\": \"3\",\n      \"text\": \"Buy milk\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "6faab876-7b85-4fa1-b685-293715cf0eef",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "actions/addItem",
+      "responses": [
+        {
+          "uuid": "3fbb3fd1-10a3-455e-9603-29eba5a61975",
+          "body": "{}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

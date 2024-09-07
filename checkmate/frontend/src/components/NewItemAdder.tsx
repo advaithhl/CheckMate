@@ -1,12 +1,26 @@
 import { Button, Dialog, Flex, TextField } from "@radix-ui/themes";
 import { FabButton } from "./FloatingActionButton";
 import { PlusIcon } from "@radix-ui/react-icons";
+import { addItem } from "../services/ActionService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 export function NewItemAdder() {
+  const [newItem, setNewItem] = useState("");
+  const queryClient = useQueryClient();
+
+  const addNewItemMutation = useMutation({
+    mutationFn: addItem,
+    onSuccess: () => {
+      // This invalidates the query, forcing a refetch.
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+    },
+  });
+
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <FabButton>{<PlusIcon />}</FabButton>
+        <FabButton onClick={() => setNewItem("")}>{<PlusIcon />}</FabButton>
       </Dialog.Trigger>
 
       <Dialog.Content maxWidth="450px">
@@ -14,6 +28,8 @@ export function NewItemAdder() {
 
         <label>
           <TextField.Root
+            value={newItem}
+            onChange={(e) => setNewItem(e.target.value)}
             placeholder="Enter your item here"
           />
         </label>
@@ -25,7 +41,11 @@ export function NewItemAdder() {
             </Button>
           </Dialog.Close>
           <Dialog.Close>
-            <Button>Add</Button>
+            <Button
+              onClick={() => addNewItemMutation.mutate({ text: newItem })}
+            >
+              Add
+            </Button>
           </Dialog.Close>
         </Flex>
       </Dialog.Content>
