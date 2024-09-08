@@ -9,8 +9,8 @@ import {
   Text,
 } from "@radix-ui/themes";
 import "./styles.css";
-import { useQuery } from "@tanstack/react-query";
-import { getItems } from "../services/ActionService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteItem, getItems } from "../services/ActionService";
 
 export function Checklist() {
   const {
@@ -20,6 +20,16 @@ export function Checklist() {
   } = useQuery({
     queryFn: getItems,
     queryKey: ["items"],
+  });
+
+  const queryClient = useQueryClient();
+
+  const deleteItemMutation = useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
+      // This invalidates the query, forcing a refetch.
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+    },
   });
 
   return (
@@ -46,7 +56,11 @@ export function Checklist() {
                 {item.text}
               </Text>
               <Flex gap={"2"} justify={"end"}>
-                <Button variant={"soft"} color={"grass"}>
+                <Button
+                  variant={"soft"}
+                  color={"grass"}
+                  onClick={() => deleteItemMutation.mutate({ id: item.id })}
+                >
                   <Text className="hidden-on-mobile">Mark as done</Text>
                   <CheckIcon width="18" height="18" />
                 </Button>

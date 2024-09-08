@@ -27,3 +27,7 @@ export interface Item {
 export interface NewItem {
   text: string;
 }
+
+export interface ToDeleteItem {
+  id: string
+}
