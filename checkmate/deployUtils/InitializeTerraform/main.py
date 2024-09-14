@@ -12,6 +12,7 @@ Required environment variables:
 
 Optional environment variables:
     - AWS_SESSION_TOKEN (default: None)
+    - DEVMODE (default: None)
 """
 
 # Import necessary libraries
@@ -28,7 +29,7 @@ aws_secret_access_key = os_getenv(
 aws_region = os_getenv('AWS_REGION')  # AWS region
 aws_session_token = os_getenv('AWS_SESSION_TOKEN')  # Optional session token
 
-# Flag to indicate dev mode
+# Flag to indicate dev mode (SET = dev mode)
 dev_mode = os_getenv('DEVMODE')
 
 if not all([aws_access_key_id, aws_secret_access_key, aws_region]):

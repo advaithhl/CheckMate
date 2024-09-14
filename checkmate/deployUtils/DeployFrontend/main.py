@@ -122,3 +122,6 @@ amplify_client.start_deployment(
     branchName=amplify_branch_name,
     jobId=amplify_deployment_job_id
 )
+
+print(
+    f'Application URL: https://{amplify_branch_name}.{amplify_app_id}.amplifyapp.com')
