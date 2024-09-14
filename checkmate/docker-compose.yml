@@ -1,12 +1,22 @@
 services:
-  init-terraform:
-    build: "deployUtils/InitializeTerraform/"
+  # init-terraform:
+  #   build: "deployUtils/InitializeTerraform/"
+  #   environment:
+  #     - AWS_ACCESS_KEY_ID
+  #     - AWS_SECRET_ACCESS_KEY
+  #     - AWS_SESSION_TOKEN
+  #     - AWS_REGION=${AWS_REGION:-eu-central-1}
+  build-frontend:
+    build: "deployUtils/BuildFrontend/"
+    volumes:
+      - ./frontend:/usr/src/frontend/
+  deploy-frontend:
+    build: "deployUtils/DeployFrontend/"
+    volumes:
+      - ./frontend/dist/:/usr/src/dist/
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_SESSION_TOKEN
       - AWS_REGION=${AWS_REGION:-eu-central-1}
-  build-frontend:
-    build: "deployUtils/BuildFrontend/"
-    volumes:
-      - ./frontend:/usr/src/frontend/
+      - DEVMODE

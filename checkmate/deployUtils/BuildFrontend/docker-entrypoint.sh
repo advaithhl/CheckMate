@@ -8,5 +8,3 @@ npm i
 
 # Build the frontend
 npm run build
-
-# TODO: Proceed as per deployment needs
