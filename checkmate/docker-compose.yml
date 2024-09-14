@@ -21,3 +21,7 @@ services:
       - AWS_SESSION_TOKEN
       - AWS_REGION=${AWS_REGION:-eu-central-1}
       - DEVMODE
+  build-lambda-zip-auth_register:
+    build: "deployUtils/BuildLambdaDeployment/"
+    volumes:
+      - ./backend/authRegister:/usr/src/lambda
