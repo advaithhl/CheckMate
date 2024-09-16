@@ -37,3 +37,7 @@ services:
     build: "deployUtils/BuildLambdaDeployment/"
     volumes:
       - ./backend/actionsAddItem:/usr/src/lambda
+  build-lambda-zip-actions-delete-item:
+    build: "deployUtils/BuildLambdaDeployment/"
+    volumes:
+      - ./backend/actionsDeleteItem:/usr/src/lambda
