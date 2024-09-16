@@ -42,7 +42,7 @@ def lambda_handler(event, context):
     # Create a new task item
     item = {
         'username': username,
-        'taskId': taskId,
+        'id': taskId,
         'text': text,
     }
 

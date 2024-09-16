@@ -37,7 +37,7 @@ def lambda_handler(event, context):
         table.delete_item(
             Key={
                 'username': username,
-                'taskId': item_id
+                'id': item_id
             }
         )
         return api_gateway_formatter(200, 'Item deleted successfully')

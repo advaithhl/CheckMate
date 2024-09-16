@@ -38,7 +38,7 @@ def lambda_handler(event, context):
         # Avoid including username in each item
         ProjectionExpression="#id, #text",
         ExpressionAttributeNames={
-            '#id': 'taskId',
+            '#id': 'id',
             '#text': 'text'
         }
     )
