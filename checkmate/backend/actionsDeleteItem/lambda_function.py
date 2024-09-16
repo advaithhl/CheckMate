@@ -4,6 +4,17 @@ import boto3
 import jwt
 
 
+def api_gateway_formatter(status, body):
+    return {
+        'statusCode': status,
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+        'body': json.dumps(body),
+        'isBase64Encoded': False
+    }
+
+
 def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('user_tasks')
@@ -17,15 +28,9 @@ def lambda_handler(event, context):
         payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
         username = payload['username']
     except jwt.ExpiredSignatureError:
-        return {
-            'statusCode': 401,
-            'body': json.dumps({'message': 'Token expired'})
-        }
+        return api_gateway_formatter(401, 'Token expired')
     except jwt.InvalidTokenError:
-        return {
-            'statusCode': 401,
-            'body': json.dumps({'message': 'Invalid token'})
-        }
+        return api_gateway_formatter(403, 'Invalid token')
 
     # Delete the item
     try:
@@ -35,12 +40,6 @@ def lambda_handler(event, context):
                 'taskId': item_id
             }
         )
-        return {
-            'statusCode': 200,
-            'body': json.dumps({'message': 'Item deleted successfully'})
-        }
+        return api_gateway_formatter(200, 'Item deleted successfully')
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'message': f'Error deleting item: {str(e)}'})
-        }
+        return api_gateway_formatter(500, f'An error occurred: {str(e)}')

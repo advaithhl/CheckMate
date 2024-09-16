@@ -1,3 +1,4 @@
+import json
 from time import time_ns
 
 import bcrypt
@@ -5,30 +6,36 @@ import boto3
 import jwt
 
 
+def api_gateway_formatter(status, body):
+    return {
+        'statusCode': status,
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+        'body': json.dumps(body),
+        'isBase64Encoded': False
+    }
+
+
 def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('users')
 
     try:
-        username = event['username']
-        password = event['password']
+        body = json.loads(event['body'])
+        username = body['username']
+        password = body['password']
 
         # Retrieve user data from DynamoDB
         response = table.get_item(Key={'username': username})
         if 'Item' not in response:
-            return {
-                'statusCode': 401,
-                'body': 'Invalid username or password'
-            }
+            return api_gateway_formatter(401, 'Invalid username or password')
 
         user = response['Item']
 
         # Verify password
         if not bcrypt.checkpw(password.encode('utf-8'), user['hashedPassword'].encode('utf-8')):
-            return {
-                'statusCode': 401,
-                'body': 'Invalid username or password'
-            }
+            return api_gateway_formatter(401, 'Invalid username or password')
 
         # Create JWT payload
         jwt_payload = {
@@ -45,16 +52,12 @@ def lambda_handler(event, context):
             algorithm='HS256',
         )
 
-        return {
-            'statusCode': 200,
+        return api_gateway_formatter(200, {
             'body': {
                 'name': user['name'],
                 'token': token
             }
-        }
+        })
 
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': f'An error occurred: {str(e)}'
-        }
+        return api_gateway_formatter(500, f'An error occurred: {str(e)}')

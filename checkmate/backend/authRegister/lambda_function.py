@@ -1,5 +1,18 @@
+import json
+
 import bcrypt
 import boto3
+
+
+def api_gateway_formatter(status, body):
+    return {
+        'statusCode': status,
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+        'body': json.dumps(body),
+        'isBase64Encoded': False
+    }
 
 
 def lambda_handler(event, context):
@@ -7,9 +20,10 @@ def lambda_handler(event, context):
     table = dynamodb.Table('users')
 
     try:
-        name = event['name']
-        username = event['username']
-        password = event['password']
+        body = json.loads(event['body'])
+        name = body['name']
+        username = body['username']
+        password = body['password']
 
         # Hash the password for security
         hashed_password = bcrypt.hashpw(
@@ -18,10 +32,7 @@ def lambda_handler(event, context):
         # Check if username already exists
         response = table.get_item(Key={'username': username})
         if 'Item' in response:
-            return {
-                'statusCode': 409,
-                'body': 'Username already exists'
-            }
+            return api_gateway_formatter(409, 'Username already exists')
 
         # Put the user data into DynamoDB
         response = table.put_item(
@@ -32,13 +43,7 @@ def lambda_handler(event, context):
             }
         )
 
-        return {
-            'statusCode': 201,
-            'body': 'User registered successfully'
-        }
+        return api_gateway_formatter(201, 'User registered successfully')
 
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': f'An error occurred: {str(e)}'
-        }
+        return api_gateway_formatter(500, f'An error occurred: {str(e)}')
