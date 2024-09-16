@@ -25,3 +25,7 @@ services:
     build: "deployUtils/BuildLambdaDeployment/"
     volumes:
       - ./backend/authRegister:/usr/src/lambda
+  build-lambda-zip-auth-login:
+    build: "deployUtils/BuildLambdaDeployment/"
+    volumes:
+      - ./backend/authLogin:/usr/src/lambda
