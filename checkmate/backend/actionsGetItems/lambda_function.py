@@ -44,6 +44,4 @@ def lambda_handler(event, context):
     )
     items = response['Items']
 
-    return api_gateway_formatter(200, {
-        'body': json.dumps({'items': items})
-    })
+    return api_gateway_formatter(200, {'items': items})

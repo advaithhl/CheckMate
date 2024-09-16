@@ -53,10 +53,8 @@ def lambda_handler(event, context):
         )
 
         return api_gateway_formatter(200, {
-            'body': {
-                'name': user['name'],
-                'token': token
-            }
+            'name': user['name'],
+            'token': token
         })
 
     except Exception as e:
