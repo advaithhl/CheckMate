@@ -33,3 +33,7 @@ services:
     build: "deployUtils/BuildLambdaDeployment/"
     volumes:
       - ./backend/actionsGetItems:/usr/src/lambda
+  build-lambda-zip-actions-add-item:
+    build: "deployUtils/BuildLambdaDeployment/"
+    volumes:
+      - ./backend/actionsAddItem:/usr/src/lambda
