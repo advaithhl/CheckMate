@@ -21,7 +21,7 @@ def lambda_handler(event, context):
 
     # Extract item ID and JWT token
     item_id = event['pathParameters']['itemId']
-    token = event['headers']['Authorization'].split()[1]
+    token = event['headers']['authorization'].split()[1]
 
     # Verify JWT token
     try:

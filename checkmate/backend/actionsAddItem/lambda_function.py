@@ -21,7 +21,7 @@ def lambda_handler(event, context):
     table = dynamodb.Table('user_tasks')
 
     # Extract JWT token from authorization header
-    token = event['headers']['Authorization'].split()[1]
+    token = event['headers']['authorization'].split()[1]
 
     # Verify JWT token
     try:
