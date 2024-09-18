@@ -3,9 +3,8 @@
 # Navigate to lambda directory
 cd lambda
 
-# Install pip and zip
+# Install zip
 apt update
-apt install python3-pip -y
 apt install zip -y
 
 # Package dependencies as per https://docs.aws.amazon.com/lambda/latest/dg/python-package.html#python-package-create-dependencies
