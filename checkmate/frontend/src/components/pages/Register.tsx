@@ -14,6 +14,12 @@ import { registerUser } from "../../services/AuthService";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
+const getNotificationColor = (notification: string) => {
+  if (notification.includes("successful")) return "green";
+  else if (notification.includes("wait")) return "orange";
+  else return "red";
+};
+
 export function Register() {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -25,9 +31,14 @@ export function Register() {
   }>({});
   const navigate = useNavigate();
   const [notification, setNotification] = useState("");
+  const [registerButtonDisabled, setRegisterButtonDisabled] = useState(false);
 
   const registerMutation = useMutation({
     mutationFn: registerUser,
+    onMutate: () => {
+      setRegisterButtonDisabled(true);
+      setNotification("Processing registration. Please wait...");
+    },
     onSuccess: () => {
       setNotification("Registration successful! Redirecting...");
       setTimeout(() => {
@@ -36,12 +47,15 @@ export function Register() {
       }, 3000);
     },
     onError: (error: AxiosError) => {
+      setRegisterButtonDisabled(false);
       if (error.status === 409) {
         setErrors({
           username: "Username is already taken",
         });
+        setNotification("");
       } else {
         setNotification("An error occurred! Please try again.");
+        console.log(error);
         setTimeout(() => {
           setNotification("");
         }, 3000);
@@ -75,7 +89,6 @@ export function Register() {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
       // No errors, proceed with form submission
-      console.log("Form submitted:", { name, username, password });
       registerMutation.mutate({
         name: name,
         username: username,
@@ -175,7 +188,12 @@ export function Register() {
                 </label>
               </Flex>
               <Flex direction={"column"} justify={"center"} mx={"3"}>
-                <Button variant={"outline"} mt={"3"} type="submit">
+                <Button
+                  variant={"outline"}
+                  mt={"3"}
+                  type="submit"
+                  disabled={registerButtonDisabled}
+                >
                   Register
                 </Button>
               </Flex>
@@ -192,7 +210,7 @@ export function Register() {
             position: "fixed",
             bottom: "20px",
             right: "20px",
-            background: notification.includes("successful") ? "green" : "red",
+            background: getNotificationColor(notification),
             zIndex: 9999,
             padding: "16px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
