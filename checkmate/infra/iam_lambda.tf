@@ -29,7 +29,7 @@ resource "aws_iam_role_policy" "auth_register_policy" {
           "dynamodb:PutItem",
           "dynamodb:GetItem"
         ],
-        Resource = "arn:aws:dynamodb:::table/users" # TODO: Change after building DynamoDB
+        Resource = "${aws_dynamodb_table.users.arn}"
       }
     ]
   })
@@ -63,7 +63,7 @@ resource "aws_iam_role_policy" "auth_login_policy" {
       {
         Effect   = "Allow",
         Action   = "dynamodb:GetItem",
-        Resource = "arn:aws:dynamodb:::table/users" # TODO: Change after building DynamoDB
+        Resource = "${aws_dynamodb_table.users.arn}"
       }
     ]
   })
@@ -97,7 +97,7 @@ resource "aws_iam_role_policy" "actions_add_item_policy" {
       {
         Effect   = "Allow",
         Action   = "dynamodb:PutItem",
-        Resource = "arn:aws:dynamodb:::table/user_tasks" # TODO: Change after building DynamoDB
+        Resource = "${aws_dynamodb_table.user_tasks.arn}"
       }
     ]
   })
@@ -132,8 +132,8 @@ resource "aws_iam_role_policy" "actions_get_items_policy" {
         Effect = "Allow",
         Action = "dynamodb:Query",
         Resource = [
-          "arn:aws:dynamodb:::table/user_tasks",        # TODO: Change after building DynamoDB
-          "arn:aws:dynamodb:::table/user_tasks/index/*" # TODO: Change after building DynamoDB
+          "${aws_dynamodb_table.user_tasks.arn}",
+          "${aws_dynamodb_table.user_tasks.arn}/index/*"
         ]
       }
     ]
@@ -168,7 +168,7 @@ resource "aws_iam_role_policy" "actions_delete_item_policy" {
       {
         Effect   = "Allow",
         Action   = "dynamodb:DeleteItem",
-        Resource = "arn:aws:dynamodb:::table/user_tasks" # TODO: Change after building DynamoDB
+        Resource = "${aws_dynamodb_table.user_tasks.arn}"
       }
     ]
   })
