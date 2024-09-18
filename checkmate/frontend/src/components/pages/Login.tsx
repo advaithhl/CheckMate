@@ -16,6 +16,11 @@ import { UserInfo } from "../../models";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 
+const getNotificationColor = (notification: string) => {
+  if (notification.includes("wait")) return "orange";
+  else return "red";
+};
+
 export function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,17 +30,21 @@ export function Login() {
   }>({});
   const navigate = useNavigate();
   const [notification, setNotification] = useState("");
+  const [loginButtonDisabled, setLoginButtonDisabled] = useState(false);
 
   const loginMutation = useMutation({
     mutationFn: loginUser,
+    onMutate: () => {
+      setLoginButtonDisabled(true);
+      setNotification("Validating your credentials. Please wait...");
+    },
     onSuccess: (data: UserInfo) => {
       setUserInfoToLocalStorage(data);
-      console.log(data.id);
-      console.log(data.name);
       navigate("/");
     },
     onError: (error: AxiosError) => {
-      if (error.status === 404) {
+      setLoginButtonDisabled(false);
+      if (error.status === 401) {
         setErrors({
           username: "Please recheck your username",
           password: "Please recheck your password",
@@ -46,6 +55,7 @@ export function Login() {
         }, 3000);
       } else {
         setNotification("An error occurred! Please try again.");
+        console.log(error);
         setTimeout(() => {
           setNotification("");
         }, 3000);
@@ -72,7 +82,6 @@ export function Login() {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
       // No errors, proceed with form submission
-      console.log("Form submitted:", { username, password });
       loginMutation.mutate({
         username: username,
         password: password,
@@ -144,7 +153,12 @@ export function Login() {
                 </label>
               </Flex>
               <Flex direction={"column"} justify={"center"} mx={"3"}>
-                <Button variant={"outline"} mt={"3"} type="submit">
+                <Button
+                  variant={"outline"}
+                  mt={"3"}
+                  type="submit"
+                  disabled={loginButtonDisabled}
+                >
                   Login
                 </Button>
               </Flex>
@@ -161,7 +175,7 @@ export function Login() {
             position: "fixed",
             bottom: "20px",
             right: "20px",
-            background: "red",
+            background: getNotificationColor(notification),
             zIndex: 9999,
             padding: "16px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
