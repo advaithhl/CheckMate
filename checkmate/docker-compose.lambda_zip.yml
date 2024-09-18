@@ -1,26 +1,4 @@
 services:
-  init-terraform:
-    build: "deployUtils/InitializeTerraform/"
-    environment:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_SESSION_TOKEN
-      - AWS_REGION=${AWS_REGION:-eu-central-1}
-      - DEVMODE
-  build-frontend:
-    build: "deployUtils/BuildFrontend/"
-    volumes:
-      - ./frontend:/usr/src/frontend/
-  deploy-frontend:
-    build: "deployUtils/DeployFrontend/"
-    volumes:
-      - ./frontend/dist/:/usr/src/dist/
-    environment:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_SESSION_TOKEN
-      - AWS_REGION=${AWS_REGION:-eu-central-1}
-      - DEVMODE
   build-lambda-zip-auth_register:
     build: "deployUtils/BuildLambdaDeployment/"
     volumes:
