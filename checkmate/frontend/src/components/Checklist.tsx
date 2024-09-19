@@ -17,6 +17,7 @@ export function Checklist() {
     data: checkList,
     isLoading,
     isError,
+    error,
   } = useQuery({
     queryFn: getItems,
     queryKey: ["items"],
@@ -39,11 +40,27 @@ export function Checklist() {
           <Spinner />
         </Flex>
       )}
-      {isError && (
+      {isError && !error.message.includes("40") && (
         <Flex justify={"center"}>
           <Text>
             An error occurred while fetching the checklist. Please try to{" "}
             <Link href="/">refresh</Link> the page.
+          </Text>
+        </Flex>
+      )}
+      {isError && error.message.includes("401") && (
+        <Flex justify={"center"}>
+          <Text>
+            Your session has timed out. Please{" "}
+            <Link href="/logout">logout</Link> and login again.
+          </Text>
+        </Flex>
+      )}
+      {isError && error.message.includes("403") && (
+        <Flex justify={"center"}>
+          <Text>
+            Your session seems to be corrupted. Please{" "}
+            <Link href="/logout">logout</Link> and login again.
           </Text>
         </Flex>
       )}
