@@ -1,4 +1,11 @@
-import { AlertDialog, Button, Dialog, Flex, TextField } from "@radix-ui/themes";
+import {
+  AlertDialog,
+  Button,
+  Dialog,
+  Flex,
+  Spinner,
+  TextField,
+} from "@radix-ui/themes";
 import { FabButton } from "./FloatingActionButton";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { addItem } from "../services/ActionService";
@@ -12,14 +19,19 @@ export function NewItemAdder() {
 
   const addNewItemMutation = useMutation({
     mutationFn: addItem,
+    onMutate: () => {
+      setMutationInProgress(true);
+    },
     onSuccess: () => {
       // This invalidates the query, forcing a refetch.
       queryClient.invalidateQueries({ queryKey: ["items"] });
+      setMutationInProgress(false);
       setErrorTitle("");
       setErrorMessage("");
       setErrorRedirectLink("");
     },
     onError: (error: AxiosError) => {
+      setMutationInProgress(false);
       if (error.status === 401) {
         setErrorTitle("Session expired");
         setErrorMessage(
@@ -44,6 +56,7 @@ export function NewItemAdder() {
     },
   });
 
+  const [mutationInProgress, setMutationInProgress] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [errorTitle, setErrorTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -73,13 +86,13 @@ export function NewItemAdder() {
                 Cancel
               </Button>
             </Dialog.Close>
-            <Dialog.Close>
-              <Button
-                onClick={() => addNewItemMutation.mutate({ text: newItem })}
-              >
-                Add
-              </Button>
-            </Dialog.Close>
+            <Button
+              onClick={() => addNewItemMutation.mutate({ text: newItem })}
+              disabled={mutationInProgress}
+            >
+              {mutationInProgress && <Spinner />}
+              Add
+            </Button>
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
