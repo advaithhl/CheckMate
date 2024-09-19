@@ -11,13 +11,14 @@ import {
 import "./styles.css";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteItem, getItems } from "../services/ActionService";
+import { useState } from "react";
 
 export function Checklist() {
   const {
     data: checkList,
-    isLoading,
-    isError,
-    error,
+    isLoading: isGetItemsLoading,
+    isError: isGetItemsError,
+    error: getItemsError,
   } = useQuery({
     queryFn: getItems,
     queryKey: ["items"],
@@ -31,16 +32,23 @@ export function Checklist() {
       // This invalidates the query, forcing a refetch.
       queryClient.invalidateQueries({ queryKey: ["items"] });
     },
+    onError: () => {
+      setDisabledButtonItemId("");
+    },
   });
+
+  const [disabledButtonItemId, setDisabledButtonItemId] = useState("");
 
   return (
     <Container>
-      {isLoading && (
+      {isGetItemsLoading && (
         <Flex justify={"center"}>
           <Spinner />
         </Flex>
       )}
-      {isError && !error.message.includes("40") && (
+      {((isGetItemsError && !getItemsError.message.includes("40")) ||
+        (deleteItemMutation.isError &&
+          !deleteItemMutation.error.message.includes("40"))) && (
         <Flex justify={"center"}>
           <Text>
             An error occurred while fetching the checklist. Please try to{" "}
@@ -48,7 +56,9 @@ export function Checklist() {
           </Text>
         </Flex>
       )}
-      {isError && error.message.includes("401") && (
+      {((isGetItemsError && getItemsError.message.includes("401")) ||
+        (deleteItemMutation.isError &&
+          deleteItemMutation.error.message.includes("401"))) && (
         <Flex justify={"center"}>
           <Text>
             Your session has timed out. Please{" "}
@@ -56,7 +66,9 @@ export function Checklist() {
           </Text>
         </Flex>
       )}
-      {isError && error.message.includes("403") && (
+      {((isGetItemsError && getItemsError.message.includes("403")) ||
+        (deleteItemMutation.isError &&
+          deleteItemMutation.error.message.includes("403"))) && (
         <Flex justify={"center"}>
           <Text>
             Your session seems to be corrupted. Please{" "}
@@ -76,10 +88,16 @@ export function Checklist() {
                 <Button
                   variant={"soft"}
                   color={"grass"}
-                  onClick={() => deleteItemMutation.mutate({ id: item.id })}
+                  onClick={() => {
+                    setDisabledButtonItemId(item.id);
+                    deleteItemMutation.mutate({ id: item.id });
+                  }}
                 >
                   <Text className="hidden-on-mobile">Mark as done</Text>
-                  <CheckIcon width="18" height="18" />
+                  {disabledButtonItemId !== item.id && (
+                    <CheckIcon width="18" height="18" />
+                  )}
+                  {disabledButtonItemId === item.id && <Spinner />}
                 </Button>
               </Flex>
             </Flex>
