@@ -71,6 +71,7 @@ export function NewItemAdder() {
 
         <Dialog.Content maxWidth="450px">
           <Dialog.Title>Add new task</Dialog.Title>
+          <Dialog.Description />
 
           <label>
             <TextField.Root

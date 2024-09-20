@@ -44,7 +44,7 @@ export function Register() {
       setTimeout(() => {
         setNotification("");
         navigate("/login");
-      }, 3000);
+      }, 2000);
     },
     onError: (error: AxiosError) => {
       setRegisterButtonDisabled(false);
