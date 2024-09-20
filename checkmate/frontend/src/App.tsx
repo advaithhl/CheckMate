@@ -1,4 +1,5 @@
 import { Theme } from "@radix-ui/themes";
+import { ThemeProvider } from "next-themes";
 import "@radix-ui/themes/styles.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./components/pages/Home";
@@ -36,9 +37,11 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Theme>
-        <RouterProvider router={router} />
-      </Theme>
+      <ThemeProvider attribute="class">
+        <Theme>
+          <RouterProvider router={router} />
+        </Theme>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
