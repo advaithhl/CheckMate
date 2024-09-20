@@ -8,7 +8,7 @@ resource "aws_lambda_function" "auth_register" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
-  architectures = ["arm64"] # TODO: Determine this dynamically.
+  architectures = var.lambda_architecture
 }
 
 resource "aws_lambda_function" "auth_login" {
@@ -21,7 +21,7 @@ resource "aws_lambda_function" "auth_login" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
-  architectures = ["arm64"] # TODO: Determine this dynamically.
+  architectures = var.lambda_architecture
 }
 
 resource "aws_lambda_function" "actions_add_item" {
@@ -34,7 +34,7 @@ resource "aws_lambda_function" "actions_add_item" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
-  architectures = ["arm64"] # TODO: Determine this dynamically.
+  architectures = var.lambda_architecture
 }
 
 resource "aws_lambda_function" "actions_get_items" {
@@ -47,7 +47,7 @@ resource "aws_lambda_function" "actions_get_items" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
-  architectures = ["arm64"] # TODO: Determine this dynamically.
+  architectures = var.lambda_architecture
 }
 
 resource "aws_lambda_function" "actions_delete_item" {
@@ -60,5 +60,5 @@ resource "aws_lambda_function" "actions_delete_item" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
-  architectures = ["arm64"] # TODO: Determine this dynamically.
+  architectures = var.lambda_architecture
 }
