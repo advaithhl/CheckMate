@@ -1,5 +1,11 @@
 """
-This script deploys the built frontend to AWS Amplify.
+This script deploys the built frontend to an existing AWS Amplify Gen 2 app.
+
+A Python script is required because the AWS Terraform module doesn't support
+manual deployments in Amplify Gen 2 as of now. However, there is a REST API and
+a corresponding boto3 method available. This issue is being tracked at the link
+below:
+https://github.com/hashicorp/terraform-provider-aws/issues/24720
 
 Required external libraries:
     - boto3
@@ -8,15 +14,14 @@ Required environment variables:
     - AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY
     - AWS_REGION
+    - AMPLIFY_APP_ID
 
 Optional environment variables:
     - AWS_SESSION_TOKEN (default: None)
-    - DEVMODE (default: None)
 """
 
 # Import necessary libraries
 import zipfile  # Used to zip the built contents
-from datetime import datetime, timezone  # Used to name resources in dev mode
 from os import getenv as os_getenv  # Used to retrieve environment variables
 from os import path as os_path  # Used for path related operations
 from os import walk as os_walk  # Used to navigate dir
@@ -33,10 +38,11 @@ aws_secret_access_key = os_getenv(
 aws_region = os_getenv('AWS_REGION')  # AWS region
 aws_session_token = os_getenv('AWS_SESSION_TOKEN')  # Optional session token
 
-# Flag to indicate dev mode (SET = dev mode)
-dev_mode = os_getenv('DEVMODE')
+# Retrieve Amplify Gen 2 app ID from environment variables
+amplify_app_id = os_getenv('AMPLIFY_APP_ID')
+amplify_branch_name = 'prod'  # Work on the `prod` branch
 
-if not all([aws_access_key_id, aws_secret_access_key, aws_region]):
+if not all([aws_access_key_id, aws_secret_access_key, aws_region, amplify_app_id]):
     print('Required environment variable is empty. Aborting!')
     exit(1)
 
@@ -71,33 +77,6 @@ amplify_client = boto3.client(
     aws_secret_access_key=aws_secret_access_key,
     aws_session_token=aws_session_token,
     region_name=aws_region,
-)
-
-# Create an app
-response_create_app = amplify_client.create_app(
-    name=f'checkmate-frontend-{
-        datetime.now(timezone.utc)
-        .strftime("%Y%m%d%H%M%S") if dev_mode else "prod"}',
-    # Rewrite rules similar to nginx try_files to support
-    # client-side routing
-    customRules=[
-        {
-            'source': '/<*>',
-            'target': '/index.html',
-            'status': '404-200',
-        },
-    ],
-)
-
-# Obtain app ID from response
-amplify_app_id = response_create_app['app']['appId']
-amplify_branch_name = 'dev' if dev_mode else 'prod'
-
-# Create a branch
-amplify_client.create_branch(
-    appId=amplify_app_id,
-    branchName=amplify_branch_name,
-    stage='PRODUCTION'
 )
 
 # Create a deployment
