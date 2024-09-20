@@ -8,6 +8,7 @@ resource "aws_lambda_function" "auth_register" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
+  memory_size   = 2048
   architectures = var.lambda_architecture
 }
 
@@ -21,6 +22,7 @@ resource "aws_lambda_function" "auth_login" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
+  memory_size   = 2048
   architectures = var.lambda_architecture
 }
 
@@ -34,6 +36,7 @@ resource "aws_lambda_function" "actions_add_item" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
+  memory_size   = 2048
   architectures = var.lambda_architecture
 }
 
@@ -47,6 +50,7 @@ resource "aws_lambda_function" "actions_get_items" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
+  memory_size   = 2048
   architectures = var.lambda_architecture
 }
 
@@ -60,5 +64,6 @@ resource "aws_lambda_function" "actions_delete_item" {
 
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
+  memory_size   = 2048
   architectures = var.lambda_architecture
 }
