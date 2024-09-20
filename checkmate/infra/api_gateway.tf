@@ -4,7 +4,7 @@ resource "aws_apigatewayv2_api" "checkmate_api" {
 
   cors_configuration {
     allow_credentials = false
-    allow_headers     = ["*"]
+    allow_headers     = ["Authorization", "Content-Type"]
     allow_methods     = ["GET", "POST", "DELETE"]
     allow_origins     = ["https://prod.${aws_amplify_app.checkmate_frontend.default_domain}"]
     expose_headers    = ["*"]
