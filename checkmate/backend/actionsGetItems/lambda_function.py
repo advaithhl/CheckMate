@@ -1,4 +1,5 @@
 import json
+from os import getenv as os_getenv
 
 import boto3
 import jwt
@@ -24,8 +25,11 @@ def lambda_handler(event, context):
 
     # Verify JWT token
     try:
-        payload = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
+        secret_key = os_getenv('JWT_SECRET_KEY')
+        payload = jwt.decode(token, secret_key, algorithms=['HS256'])
         username = payload['username']
+    except KeyError:
+        return api_gateway_formatter(500, 'An internal server error occured')
     except jwt.ExpiredSignatureError:
         return api_gateway_formatter(401, 'Token expired')
     except jwt.InvalidTokenError:

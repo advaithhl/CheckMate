@@ -1,4 +1,5 @@
 import json
+from os import getenv as os_getenv
 from time import time_ns
 
 import bcrypt
@@ -22,6 +23,7 @@ def lambda_handler(event, context):
     table = dynamodb.Table('users')
 
     try:
+        secret_key = os_getenv('JWT_SECRET_KEY')
         body = json.loads(event['body'])
         username = body['username']
         password = body['password']
@@ -48,7 +50,7 @@ def lambda_handler(event, context):
         # Generate JWT token
         token = jwt.encode(
             jwt_payload,
-            'your_secret_key',
+            secret_key,
             algorithm='HS256',
         )
 
@@ -57,5 +59,7 @@ def lambda_handler(event, context):
             'token': token
         })
 
+    except KeyError:
+        return api_gateway_formatter(500, 'An internal server error occured')
     except Exception as e:
         return api_gateway_formatter(500, f'An error occurred: {str(e)}')

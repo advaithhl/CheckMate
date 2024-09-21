@@ -24,6 +24,11 @@ resource "aws_lambda_function" "auth_login" {
   runtime       = "python3.12"
   memory_size   = 2048
   architectures = var.lambda_architecture
+  environment {
+    variables = {
+      "JWT_SECRET_KEY" = random_password.jwt_secret_key.result
+    }
+  }
 }
 
 resource "aws_lambda_function" "actions_add_item" {
@@ -38,6 +43,11 @@ resource "aws_lambda_function" "actions_add_item" {
   runtime       = "python3.12"
   memory_size   = 2048
   architectures = var.lambda_architecture
+  environment {
+    variables = {
+      "JWT_SECRET_KEY" = random_password.jwt_secret_key.result
+    }
+  }
 }
 
 resource "aws_lambda_function" "actions_get_items" {
@@ -52,6 +62,11 @@ resource "aws_lambda_function" "actions_get_items" {
   runtime       = "python3.12"
   memory_size   = 2048
   architectures = var.lambda_architecture
+  environment {
+    variables = {
+      "JWT_SECRET_KEY" = random_password.jwt_secret_key.result
+    }
+  }
 }
 
 resource "aws_lambda_function" "actions_delete_item" {
@@ -66,4 +81,9 @@ resource "aws_lambda_function" "actions_delete_item" {
   runtime       = "python3.12"
   memory_size   = 2048
   architectures = var.lambda_architecture
+  environment {
+    variables = {
+      "JWT_SECRET_KEY" = random_password.jwt_secret_key.result
+    }
+  }
 }
