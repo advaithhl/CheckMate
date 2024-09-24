@@ -106,6 +106,8 @@ export AWS_REGION=<YOUR_AWS_REGION>
 export AWS_SESSION_TOKEN=<YOUR_AWS_SESSION_TOKEN> # Optional
 ```
 
+*Note: If you need to use `sudo` to run docker, you can use `sudo bash` to open a root shell and run commands there. This way, the environment variables will be exported directly to the root shell and will be passed on to the containers by Docker Compose. Alternatively, you can add these variables to your shell profile (`.bashrc`, `.zshrc` etc.) and `source` the profile.*
+
 Windows:
 
 ``` bat
