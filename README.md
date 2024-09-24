@@ -134,6 +134,12 @@ Navigate to the `infra` directory.
 cd infra
 ```
 
+Install the required providers (`aws` and `random`).
+
+``` bash
+terraform init
+```
+
 If your machine architecture is `arm64`, run the below command:
 
 ``` bash
