@@ -42,10 +42,18 @@ aws_session_token = os_getenv('AWS_SESSION_TOKEN')  # Optional session token
 amplify_app_id = os_getenv('AMPLIFY_APP_ID')
 amplify_branch_name = 'prod'  # Work on the `prod` branch
 
-if not all([aws_access_key_id, aws_secret_access_key, aws_region, amplify_app_id]):
-    print('Required environment variable is empty. Aborting!')
-    exit(1)
+required_env_vars = {
+    'AWS_ACCESS_KEY_ID': aws_access_key_id,
+    'AWS_SECRET_ACCESS_KEY': aws_secret_access_key,
+    'AWS_REGION': aws_region,
+    'AMPLIFY_APP_ID': amplify_app_id,
+}
 
+for (name, value) in required_env_vars.items():
+    if not value:
+        print(f"Value of {name} is '{value}'.")
+        print('Required environment variable is empty. Aborting!')
+        exit(1)
 
 def zip_directory(folder_path, output_zip):
     # Zips the contents of a path to `output_zip`
