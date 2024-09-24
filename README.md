@@ -23,7 +23,7 @@ CheckMate doesn't have many features at the moment; it's just a simple CRUD app.
 
 Aah yes, the good stuff.
 
-CheckMate is **completely serverless**! It'll scale as long as there are resources in AWS 😉.
+CheckMate is **completely serverless**! It will scale as long as there are resources in AWS 😉.
 
 ### 🛠️ Infrastructure
 
@@ -35,17 +35,17 @@ CheckMate is **completely serverless**! It'll scale as long as there are resourc
 
 ### 📚 Libraries
 
-- **React:** A component based frontend library.
+- **React:** A component-based frontend library.
 - **RadixUI:** A UI component library.
-- **Vite:** A dev server and build tool which produces super optimized static assets.
-- **React router:** A library to allow client-side routing.
+- **Vite:** A dev server and build tool that produces highly optimized static assets.
+- **React Router:** A library that allow client-side routing.
 - **Axios:** A library to issue HTTP requests to the backend.
 - **Tanstack Query:** A library to asynchronously manage client-server state.
 - **boto3**: An official python library for AWS (used for specific cases).
 
 ### 🚀 DevOps tools
 
-- **Docker Compose:** A tool for running multiple containers using different parameters.
+- **Docker Compose:** A tool for running multiple containers with different parameters.
 - **Terraform:** A tool for creating, managing, and destroying infrastructure through declarative code.
 
 ### 🔗 How it all ties together
@@ -54,13 +54,13 @@ CheckMate is **completely serverless**! It'll scale as long as there are resourc
 
 - **Terraform** creates all AWS infrastructure namely a bare **AWS Amplify Gen 2** application with custom rewrite rules to enable client-side routing, **AWS API Gateway**, its routes and CORS configuration, five **AWS Lambda**s running the zip files created by **Docker Compose** for each route, **AWS DynamoDB** tables to store app data, **AWS App Auto Scaling** policies, and all the required IAM roles with fine-grained permissions.
 
-- **React** uses **React router**'s client-side routing to determine and load components made using **RadixUI**.
+- **React** uses **React Router**'s client-side routing to determine and load components made using **RadixUI**.
 
 - The components rely on data/state provided by **Tanstack Query**, which in turn uses **Axios** to make HTTP requests to the **AWS API Gateway**.
 
-- **Vite** bundles all of these together and hard codes the URL of the **AWS API Gateway** provided in a **dotenv** format during build time and creates a folder containing a highly optimized bundle of static assets. This is done inside a `node` container which uses Docker volumes to share files between itself and the host system.
+- **Vite** bundles all of these together and hardcodes the URL of the **AWS API Gateway** provided in a **dotenv** format during build time and creates a folder containing a highly optimized bundle of static assets. This is done inside a `node` container which uses Docker volumes to share files between itself and the host system.
 
-- Finally, **boto3** is used to zip the folder and deploy it to **AWS Amplify Gen 2**. This is done in a `python` container which again uses Docker volumes to bind host file system to that of the container's.
+- Finally, **boto3** is used to zip the folder and deploy it to **AWS Amplify Gen 2**. This is done inside a `python` container, which again uses Docker volumes to bind host file system to that of the container's.
 
 As of now, the official AWS Terraform module does **not** support zip deployments to **AWS Amplify** and an [issue](https://github.com/hashicorp/terraform-provider-aws/issues/24720) is open in Github for this. However, since the feature is supported by the REST API, **boto3** also supports this. This is one of the reasons why **boto3** was needed to place the deployment.
 
