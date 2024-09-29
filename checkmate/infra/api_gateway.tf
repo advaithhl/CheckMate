@@ -32,7 +32,7 @@ resource "aws_apigatewayv2_integration" "auth_register_integration" {
   api_id                 = aws_apigatewayv2_api.checkmate_api.id        # Links to the API
   integration_type       = "AWS_PROXY"                                  # Lambda proxy integration
   integration_uri        = aws_lambda_function.auth_register.invoke_arn # ARN of the corresponding Lambda function
-  integration_method     = "POST"                                       # HTTP method used in this integration
+  integration_method     = "POST"                                       # HTTP method used to call Lambda
   payload_format_version = "2.0"                                        # Specifies the version of the payload format
 }
 
@@ -48,7 +48,7 @@ resource "aws_apigatewayv2_integration" "auth_login_integration" {
   api_id                 = aws_apigatewayv2_api.checkmate_api.id     # Links to the API
   integration_type       = "AWS_PROXY"                               # Lambda proxy integration
   integration_uri        = aws_lambda_function.auth_login.invoke_arn # ARN of the corresponding Lambda function
-  integration_method     = "POST"                                    # HTTP method used in this integration
+  integration_method     = "POST"                                    # HTTP method used to call Lambda
   payload_format_version = "2.0"                                     # Specifies the version of the payload format
 }
 
@@ -64,7 +64,7 @@ resource "aws_apigatewayv2_integration" "actions_add_item_integration" {
   api_id                 = aws_apigatewayv2_api.checkmate_api.id           # Links to the API
   integration_type       = "AWS_PROXY"                                     # Lambda proxy integration
   integration_uri        = aws_lambda_function.actions_add_item.invoke_arn # ARN of the corresponding Lambda function
-  integration_method     = "POST"                                          # HTTP method used in this integration
+  integration_method     = "POST"                                          # HTTP method used to call Lambda
   payload_format_version = "2.0"                                           # Specifies the version of the payload format
 }
 
@@ -80,7 +80,7 @@ resource "aws_apigatewayv2_integration" "actions_get_items_integration" {
   api_id                 = aws_apigatewayv2_api.checkmate_api.id            # Links to the API
   integration_type       = "AWS_PROXY"                                      # Lambda proxy integration
   integration_uri        = aws_lambda_function.actions_get_items.invoke_arn # ARN of the corresponding Lambda function
-  integration_method     = "POST"                                           # HTTP method used in this integration
+  integration_method     = "POST"                                           # HTTP method used to call Lambda
   payload_format_version = "2.0"                                            # Specifies the version of the payload format
 }
 
@@ -96,6 +96,6 @@ resource "aws_apigatewayv2_integration" "actions_delete_items_integration" {
   api_id                 = aws_apigatewayv2_api.checkmate_api.id              # Links to the API
   integration_type       = "AWS_PROXY"                                        # Lambda proxy integration
   integration_uri        = aws_lambda_function.actions_delete_item.invoke_arn # ARN of the corresponding Lambda function
-  integration_method     = "POST"                                             # HTTP method used in this integration
+  integration_method     = "POST"                                             # HTTP method used to call Lambda
   payload_format_version = "2.0"                                              # Specifies the version of the payload format
 }
