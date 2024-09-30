@@ -235,6 +235,14 @@ rm -rf frontend/dist
 
 Even though CheckMate is "serverless," it may seem to have a slow backend at times. One of the main reasons for this is the [**Lambda cold start delay**](https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environments.html#cold-start-latency). Since CheckMate doesn't have a constant user base, most requests are cold starts. However, warm starts of CheckMate Lambdas are significantly faster and well within the reasonable time limits of an HTTP endpoint. Ironically, the more you use CheckMate, the *faster* it becomes! 🚀
 
-A solution to guarantee speed would be to use **provisioned concurrency**, but not only is it more expensive and requires an AWS service request to increase capacity, it also goes against the core principles of serverless architectures.
+A solution to guarantee speed would be to use **provisioned concurrency**, but not only is it more expensive and requires an AWS service request to increase capacity, one might say it goes against the principles of a "truly" serverless architecture.
 
 The solution used here was to beef up the Lambda functions by allocating more **RAM**, which also gives the function more **CPU power**. This reduces cold start delays significantly without deviating from the principles of serverless architecture. 💪
+
+## ⚙️ Future Scalability Considerations
+
+CheckMate is designed to scale automatically with the increasing user base due to its serverless architecture. While CheckMate already incorporates the below ideas in some way or form here and there, for future scaling and optimization, focus can be laid on the following:
+
+- 🔄 Utilizing **provisioned concurrency** during peak usage times or when performance needs to be guaranteed.
+- ⚡ Adjusting Lambda **memory allocation** and monitoring **performance metrics** to ensure cost-effective scaling.
+- 📈 Adding **Auto Scaling groups** or leveraging **AWS Step Functions** for more complex workflows, if the app grows to include additional backend services that require managed scaling.
